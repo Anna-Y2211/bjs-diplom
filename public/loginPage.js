@@ -2,7 +2,7 @@
 
 const userForm = new UserForm();
 userForm.loginFormCallback = function(data) {
-  ApiConnector.login = (data, response => {
+  ApiConnector.login(data, response => {
      if(response.success) {
       location.reload();
      } else {
@@ -12,11 +12,11 @@ userForm.loginFormCallback = function(data) {
 }
 
 userForm.registerFormCallback = function(data) {
-  ApiConnector.login = (data, response => {
+  ApiConnector.register(data, response => {
      if(response.success) {
       location.reload();
      } else {
-      userForm.setRegisterErrorVessage(response.error);
+      userForm.setRegisterErrorMessage(response.error);
      }
   });
 }
