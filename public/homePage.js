@@ -1,6 +1,5 @@
 'use strict'
 
-const { response } = require("express");
 
 const logoutButton = new LogoutButton();
 
@@ -14,7 +13,7 @@ logoutButton.action = function() {
 
     ApiConnector.current(response => {
         if(response.success) {
-            ProfileWidget.showProfile(response);
+            ProfileWidget.showProfile(response.data);
         }
     });
 }
@@ -25,7 +24,7 @@ function getCurrency() {
     ApiConnector.getStocks(response => {
         if(response.success) {
             ratesBoard.clearTable();
-            ratesBoard.fillTable(response);
+            ratesBoard.fillTable(response.data);
         }
     });
 }
@@ -37,7 +36,7 @@ const moneyManager = new MoneyManager();
 moneyManager.addMoneyCallback = function(data) {
     ApiConnector.addMoney(data, response => {
         if(response.success) {
-            ProfileWidget.showProfile(response);
+            ProfileWidget.showProfile(response.data);
             moneyManager.setMessage('Баланс успешно пополнен');
         } else {
             moneyManager.setMessage(response.error);
@@ -48,8 +47,8 @@ moneyManager.addMoneyCallback = function(data) {
 moneyManager.conversionMoneyCallback = function(data) {
     ApiConnector.convertMoney(data, response => {
         if(response.success) {
-        ProfileWidget.showProfile(response);
-        moneyManager.setMessage('Конвертация прошла успешно');
+        ProfileWidget.showProfile(response.data);
+        moneyManager.setMessage(responce.success, 'Конвертация прошла успешно');
         } else {
             moneyManager.setMessage(response.error);
         }
@@ -60,7 +59,7 @@ moneyManager.sendMoneyCallback = function(data) {
     ApiConnector.transferMoney(data, response => {
         if(response.success) {
             ProfileWidget.showProfile(response);
-            moneyManager.setMessage('Перевод выполнен успешно');
+            moneyManager.setMessage(responce.success, 'Перевод выполнен успешно');
         } else {
             moneyManager.setMessage(response.error);
         }
@@ -72,8 +71,8 @@ const favoritesWidget = new FavoritesWidget();
 ApiConnector.getFavorites(response => {
     if(response.success) {
         favoritesWidget.clearTable();
-        favoritesWidget.fillTable();
-        favoritesWidget.updateUsersList();
+        favoritesWidget.fillTable(response.data);
+        favoritesWidget.updateUsersList(response.data);
     } else {
         favoritesWidget.setMessage(response.error);
     }
@@ -83,8 +82,9 @@ favoritesWidget.addUserCallback = function(data) {
     ApiConnector.addUserToFavorites(data, response => {
         if(response.success) {
             favoritesWidget.clearTable();
-            favoritesWidget.fillTable();
-            favoritesWidget.updateUsersList();
+            favoritesWidget.fillTable(response.data);
+            favoritesWidget.updateUsersList(response.data);
+            favoritesWidget.setMessage(responce.success, 'Успешно добавлено в избранное');
         } else {
             favoritesWidget.setMessage(response.error);
         }
@@ -95,8 +95,9 @@ favoritesWidget.removeUserCallback = function(data) {
     ApiConnector.removeUserFromFavorites(data, response => {
         if(response.success) {
             favoritesWidget.clearTable();
-            favoritesWidget.fillTable();
-            favoritesWidget.updateUsersList();
+            favoritesWidget.fillTable(response.data);
+            favoritesWidget.updateUsersList(response.data);
+            favoritesWidget.setMessage(responce.success, 'Успешно удалено из избранного');
         } else {
             favoritesWidget.setMessage(response.error);
         }
