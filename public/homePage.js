@@ -37,9 +37,9 @@ moneyManager.addMoneyCallback = function(data) {
     ApiConnector.addMoney(data, response => {
         if(response.success) {
             ProfileWidget.showProfile(response.data);
-            moneyManager.setMessage('Баланс успешно пополнен');
+            moneyManager.setMessage(response.success, 'Баланс успешно пополнен');
         } else {
-            moneyManager.setMessage(response.error);
+            moneyManager.setMessage(response.error, 'Ошибка! Баланс не пополнен');
         }
     });
 }
@@ -50,7 +50,7 @@ moneyManager.conversionMoneyCallback = function(data) {
         ProfileWidget.showProfile(response.data);
         moneyManager.setMessage(responce.success, 'Конвертация прошла успешно');
         } else {
-            moneyManager.setMessage(response.error);
+            moneyManager.setMessage(response.error, 'Ошибка! Конвертация не прошла');
         }
     });
 }
@@ -61,7 +61,7 @@ moneyManager.sendMoneyCallback = function(data) {
             ProfileWidget.showProfile(response);
             moneyManager.setMessage(responce.success, 'Перевод выполнен успешно');
         } else {
-            moneyManager.setMessage(response.error);
+            moneyManager.setMessage(response.error, 'Ошибка! Перевод не выполнен');
         }
     });
 }
@@ -72,7 +72,7 @@ ApiConnector.getFavorites(response => {
     if(response.success) {
         favoritesWidget.clearTable();
         favoritesWidget.fillTable(response.data);
-        favoritesWidget.updateUsersList(response.data);
+        moneyManager.updateUsersList(data);
     } else {
         favoritesWidget.setMessage(response.error);
     }
@@ -83,10 +83,10 @@ favoritesWidget.addUserCallback = function(data) {
         if(response.success) {
             favoritesWidget.clearTable();
             favoritesWidget.fillTable(response.data);
-            favoritesWidget.updateUsersList(response.data);
+            moneyManager.updateUsersList(data);
             favoritesWidget.setMessage(responce.success, 'Успешно добавлено в избранное');
         } else {
-            favoritesWidget.setMessage(response.error);
+            favoritesWidget.setMessage(response.error, 'Ошибка! Не добавдено в избранное');
         }
     });
 }
@@ -96,10 +96,10 @@ favoritesWidget.removeUserCallback = function(data) {
         if(response.success) {
             favoritesWidget.clearTable();
             favoritesWidget.fillTable(response.data);
-            favoritesWidget.updateUsersList(response.data);
+            moneyManager.updateUsersList(data);
             favoritesWidget.setMessage(responce.success, 'Успешно удалено из избранного');
         } else {
-            favoritesWidget.setMessage(response.error);
+            favoritesWidget.setMessage(response.error, 'Ошибка! Не удалено из избранного');
         }
     });
 }
